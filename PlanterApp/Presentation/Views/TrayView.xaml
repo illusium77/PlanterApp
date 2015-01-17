@@ -32,7 +32,7 @@
             <ItemsControl ItemsSource="{Binding Plants}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Columns="8" />
+                        <UniformGrid Columns="{Binding ColumnCount}" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>

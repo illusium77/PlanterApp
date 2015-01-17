@@ -45,6 +45,13 @@ namespace PlanterApp.Applications.ViewModels
             set { SetProperty(ref _tray, value); }
         }
 
+        private int _columnCount;
+        public int ColumnCount
+        {
+            get { return _columnCount; }
+            set { SetProperty(ref _columnCount, value); }
+        }
+
         private SynchronizingCollection<PlantViewModel, Plant> _plants;
         public SynchronizingCollection<PlantViewModel, Plant> Plants
         {
@@ -54,6 +61,7 @@ namespace PlanterApp.Applications.ViewModels
                 if (SetProperty(ref _plants, value) && Tray != null)
                 {
                     UpdateHeader();
+                    UpdateColumnCount();
                 }
             }
         }
@@ -63,6 +71,23 @@ namespace PlanterApp.Applications.ViewModels
         {
             get { return _parentChamber; }
             set { SetProperty(ref _parentChamber, value); }
+        }
+
+        private void UpdateColumnCount()
+        {
+            switch (Plants.Count)
+            {
+                case 4 * 8:
+                    ColumnCount = 8;
+                    break;
+                case 8 * 12:
+                    ColumnCount = 12;
+                    break;
+                case 10 * 22:
+                default:
+                    ColumnCount = 22;
+                    break;
+            }
         }
 
         public void UpdateHeader()
