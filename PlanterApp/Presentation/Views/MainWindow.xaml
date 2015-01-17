@@ -1,0 +1,136 @@
+﻿<Window x:Class="PlanterApp.Presentation.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+        xmlns:vm="clr-namespace:PlanterApp.Applications.ViewModels"
+        xmlns:v="clr-namespace:PlanterApp.Presentation.Views"
+        xmlns:c="clr-namespace:PlanterApp.Presentation.Converters"
+        xmlns:waf="http://waf.codeplex.com/schemas"        
+        mc:Ignorable="d" Title="{Binding Title}" Icon="{StaticResource ApplicationIcon}"
+        KeyDown="OnKeyUpDownEvent" KeyUp="OnKeyUpDownEvent"
+        Width="1450" MinWidth="1450"
+        Height="730" MinHeight="730">
+
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding CommandService.LoadCommand}" Key="O" Modifiers="Control"/>
+        <KeyBinding Command="{Binding CommandService.ExitCommand}" Key="F4" Modifiers="Alt"/>
+        <KeyBinding Command="{Binding CommandService.SaveCommand}" Key="S" Modifiers="Control"/>
+        <KeyBinding Command="{Binding CommandService.PrintCommand}" Key="P" Modifiers="Control"/>
+        <KeyBinding Command="{Binding CommandService.SelectMultiplePlantsCommand}"
+                    CommandParameter="{Binding SelectedChamberView.Plants}"
+                    Key="A" Modifiers="Control"/>
+        <KeyBinding Command="{Binding CommandService.SelectMultiplePlantsCommand}"
+                    CommandParameter="{Binding ExperimentService.SelectedPlant.ParentTray.Plants}"
+                    Key="T" Modifiers="Control"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <waf:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <c:TimeMachineBorderColorConverter x:Key="TimeMachineBorderColorConverter" />
+    </Window.Resources>
+
+    <DockPanel>
+        <!--<Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="E_xit" Command="{Binding CommandService.ExitCommand}"/>
+            </MenuItem>
+        </Menu>-->
+
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar FocusManager.IsFocusScope="False">
+                <Button Command="{Binding CommandService.LoadCommand}" Content="Load" ToolTip="Load an experiment data" />
+                <Button Command="{Binding CommandService.SaveCommand}" CommandParameter="{Binding .}" Content="Save" ToolTip="Save current experiment" />
+                <Button Command="{Binding CommandService.SaveAsCommand}" Content="Save as.." ToolTip="Save the experiment with different name" />
+                <Button Command="{Binding CommandService.PrintCommand}" Content="Print.." ToolTip="Print experiment data" />
+                <Separator Margin="4,2"/>
+
+                <Button Command="{Binding CommandService.ImportCommand}" Content="Import.." ToolTip="Import experiment from CVS-file" />
+                <Button Command="{Binding CommandService.ExportCommand}" Content="Export.." ToolTip="Export experiment into CVS-file" />
+                <Separator Margin="4,2"/>
+
+                <ToggleButton x:Name="speechToggle" Command="{Binding CommandService.SpeechControlCommand}"
+                              Content="Voice Control" ToolTip="Toggle voice control on and off" CommandParameter="{Binding IsChecked, ElementName=speechToggle}" />
+                <Separator Margin="4,2"/>
+
+                <DatePicker SelectedDate="{Binding CurrentDate}" DisplayDateStart="{Binding StartDate}" DisplayDateEnd="{Binding EndDate}" MouseWheel="OnMouseWheel"
+                            IsEnabled="{Binding ExperimentService.HasExperiment}" FirstDayOfWeek="Monday">
+                    <DatePicker.ToolTip>
+                        <TextBlock>
+                            <Run Text="Time machine date:" />
+                            <LineBreak />
+                            <Run Text="{Binding CurrentDate, StringFormat='{}{0:ddd dd MMM yyyy}'}" />
+                        </TextBlock>
+                    </DatePicker.ToolTip>
+                </DatePicker>
+                <Button Command="{Binding CommandService.ResetTimeMachineCommand}" Content="Reset" ToolTip="Reset time machine and return to current date"
+                        IsEnabled="{Binding ExperimentService.IsTimeMachineOn}" />
+            </ToolBar>
+        </ToolBarTray>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="950" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition MinHeight="630" />
+            </Grid.RowDefinitions>
+
+            <ScrollViewer Grid.Column="0"
+                          Visibility="{Binding ExperimentService.HasExperiment, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                <Border VerticalAlignment="Top" BorderThickness="3" CornerRadius="3"
+                    BorderBrush="{Binding ExperimentService.IsTimeMachineOn, Converter={StaticResource TimeMachineBorderColorConverter}}">
+
+                    <!--<Border.Effect>
+                        <DropShadowEffect ShadowDepth="2" BlurRadius="5" />
+                    </Border.Effect>-->
+
+                    <Grid>
+                        <TextBlock Text="Time machine is ON" HorizontalAlignment="Center" VerticalAlignment="Top" Background="Red" 
+                                   Visibility="{Binding ExperimentService.IsTimeMachineOn, FallbackValue=Collapsed, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                        <TabControl Grid.Column="0" ItemsSource="{Binding ChamberViews}" SelectedItem="{Binding SelectedChamberView}">
+
+
+                            <TabControl.ItemTemplate>
+                                <DataTemplate>
+                                    <!--<TextBlock Text="{Binding Chamber.Treatment}" />-->
+                                    <!--<v:EditableTextBlock Text="Test"/>-->
+                                    <v:EditableTextBlock Text="{Binding Chamber.Treatment}"/>
+                                </DataTemplate>
+                            </TabControl.ItemTemplate>
+                            <TabControl.ContentTemplate>
+                                <DataTemplate>
+                                    <v:ChamberView />
+                                </DataTemplate>
+                            </TabControl.ContentTemplate>
+                        </TabControl>
+                    </Grid>
+                </Border>
+            </ScrollViewer>
+
+            <ScrollViewer Grid.Column="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <!--<RowDefinition Height="Auto" />-->
+                    </Grid.RowDefinitions>
+
+                    <ContentControl Grid.Row="0" Content="{Binding ViewService.PlantPropertyView}" VerticalAlignment="Top" />
+                    <ContentControl Grid.Row="1" Content="{Binding ViewService.TraitView}" VerticalAlignment="Top" />
+                    <ContentControl Grid.Row="2" Content="{Binding ViewService.StatisticView}" VerticalAlignment="Bottom" />
+                    <!--<Slider Grid.Row="3" />-->
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </DockPanel>
+</Window>

@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="PlanterApp.Presentation.Views.PlantPropertyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:c="clr-namespace:System.ComponentModel;assembly=WindowsBase"             
+             xmlns:l="clr-namespace:PlanterApp.Domain"
+             xmlns:waf="http://waf.codeplex.com/schemas"             
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <waf:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+    </UserControl.Resources>
+
+    <Expander Header="Plant properties">
+
+        <Grid Margin="22,11" IsEnabled="{Binding ExperimentService.IsTimeMachineOn, Converter={StaticResource InvertBooleanConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="300"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Id" Margin="0,11,0,0"/>
+            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding ExperimentService.SelectedPlant.Plant.Id, Mode=OneWay}" IsEnabled="False" />
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Status" Margin="0,11,0,0" />
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ExperimentService.SelectedPlant.CurrentState, Mode=OneWay}" IsEnabled="False" />
+
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Species" Margin="0,11,0,0" />
+            <ComboBox Grid.Column="1" Grid.Row="2" Name="SpeciesCombo" SelectedValue="{Binding ExperimentService.SelectedPlant.Plant.Species}"
+                      SelectedValuePath="Id" ItemsSource="{Binding ExperimentService.Experiment.Properties.Species}"
+                      DisplayMemberPath="Name" IsSynchronizedWithCurrentItem="True" />
+            
+
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="Population" Margin="0,11,0,0" />
+            <ComboBox Grid.Column="1" Grid.Row="3" Name="PopulationCombo" SelectedValue="{Binding ExperimentService.SelectedPlant.Plant.Population}"
+                      SelectedValuePath="Id" ItemsSource="{Binding ElementName=SpeciesCombo, Path=SelectedItem.Populations}" DisplayMemberPath="Name"
+                      IsSynchronizedWithCurrentItem="True" />
+
+            <TextBlock Grid.Column="0" Grid.Row="4" Text="Family" Margin="0,11,0,0" />
+            <ComboBox Grid.Column="1" Grid.Row="4" SelectedValue="{Binding ExperimentService.SelectedPlant.Plant.Family}"
+                      SelectedValuePath="Id" ItemsSource="{Binding ElementName=PopulationCombo, Path=SelectedItem.Families}"
+                      DisplayMemberPath="Name" IsSynchronizedWithCurrentItem="True" />
+
+            <TextBlock Grid.Column="0" Grid.Row="5" Text="Individual" Margin="0,11,0,0" />
+            <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding ExperimentService.SelectedPlant.Plant.Individual}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="6" Text="Notes" Margin="0,11,0,0" />
+            <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding ExperimentService.SelectedPlant.Plant.Notes}"
+                     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="60" />
+
+            <TextBlock Grid.Column="0" Grid.Row="7" Text="Exclude" Margin="0,11,0,0" />
+            <CheckBox Grid.Column="1" Grid.Row="7" IsChecked="{Binding ExperimentService.SelectedPlant.Plant.IsExcluded}"
+                      ToolTip="When checked, plant is excluded from statistics calculations." />
+
+            <TextBlock Grid.Column="0" Grid.Row="8" Text="Transplanted" Margin="0,11,0,0" />
+            <CheckBox Grid.Column="1" Grid.Row="8" IsChecked="{Binding ExperimentService.SelectedPlant.Plant.IsTransplanted}"
+                      ToolTip="This planted has been transplanted at some point." />
+        </Grid>
+    </Expander>
+</UserControl>

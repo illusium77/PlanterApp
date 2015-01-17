@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="PlanterApp.Presentation.Views.PlantView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:l="clr-namespace:PlanterApp.Domain"
+             xmlns:c="clr-namespace:PlanterApp.Presentation.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="600">
+             <!--Width="115" Height="18" MinHeight="18" UseLayoutRounding="True">-->
+    
+    <UserControl.Resources>
+        <c:PlantStatusToImageConverter x:Key="PlantStatusToImageConverter" />
+
+        <Style x:Key="PlantViewStyle" TargetType="Grid">
+            <Setter Property="Opacity" Value="1" />
+            <Setter Property="RenderTransformOrigin" Value="0.5, 0.5" />
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Plant.IsExcluded}" Value="true">
+                    <Setter Property="Opacity" Value="0.5" />
+                </DataTrigger>
+                
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="1.01" ScaleY="1.01" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+
+            </Style.Triggers>
+
+        </Style>
+
+        <Style x:Key="PlantViewLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="12" />
+            
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                    <Setter Property="Foreground" Value="White" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+    
+    <Grid ToolTip="{Binding ToolTip}" Style="{StaticResource PlantViewStyle}" MouseDown="OnMouseDown" MouseUp="OnMouseUp" ContextMenuOpening="OnContextMenuOpen">
+        <Image VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image.Source>
+                <MultiBinding Converter="{StaticResource PlantStatusToImageConverter}">
+                    <Binding Path="CurrentState" />
+                    <Binding Path="IsSelected" />
+                </MultiBinding>
+            </Image.Source>
+        </Image>
+        <TextBlock Style="{StaticResource PlantViewLabelStyle}" Text="{Binding Label}" HorizontalAlignment="Center" />
+        <Polygon Points="2,1 8,1, 2,7" Stroke="Transparent" Fill="Red"
+                 Visibility="{Binding Plant.Notes, Converter={StaticResource PlantNoteVisibilityConverter}}" />
+
+        <Grid.ContextMenu>
+            <ContextMenu ItemsSource="{Binding ChangeStateMenu}" DisplayMemberPath="CommandParameter.TargetState" ItemContainerStyle="{StaticResource PlanterMenuItemStyle}" />
+
+                <!--<MenuItem Header="Change type" ItemsSource="{Binding ChangeTypeMenu}" DisplayMemberPath="CommandParameter.TargetState"
+                          Visibility="{Binding Meristem.Type, Converter={StaticResource GenericMeristemConverter}, ConverterParameter=CanChangeType}"
+                          ItemContainerStyle="{StaticResource PlanterMenuItemStyle}" />
+
+                <MenuItem Header="Add node" ItemsSource="{Binding AddNodeMenu}" DisplayMemberPath="CommandParameter.TargetState"
+                          Visibility="{Binding Meristem.Type, Converter={StaticResource GenericMeristemConverter}, ConverterParameter=CanAddNode}"
+                          ItemContainerStyle="{StaticResource PlanterMenuItemStyle}" />
+            </ContextMenu>-->
+        </Grid.ContextMenu>
+
+
+        <!--<Grid.ContextMenu>
+            <ContextMenu ItemsSource="{Binding AvailableStates}">
+                <ContextMenu.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <EventSetter Event="Click" Handler="OnContextMenuClick" />
+                    </Style>
+                </ContextMenu.ItemContainerStyle>
+            </ContextMenu>
+        </Grid.ContextMenu>-->
+            
+    </Grid>
+
+</UserControl>

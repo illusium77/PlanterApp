@@ -1,0 +1,209 @@
+﻿<UserControl x:Class="PlanterApp.Presentation.Views.StatisticView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:waf="http://waf.codeplex.com/schemas"             
+             xmlns:l="clr-namespace:PlanterApp.Domain"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <waf:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+    </UserControl.Resources>
+
+    <Expander Header="Chamber statistics" IsEnabled="{Binding ExperimentService.IsTimeMachineOn, Converter={StaticResource InvertBooleanConverter}}">
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Expander Grid.Row="0" Margin="22,0,0,0" Header="Status" IsExpanded="True">
+                <DataGrid Margin="22,11" ItemsSource="{Binding StatisticLines}" AutoGenerateColumns="False"
+                          IsReadOnly="True" AlternatingRowBackground="Gainsboro" AlternationCount="2" FrozenColumnCount="2"
+                          SelectionChanged="OnSelectionChanged" LostFocus="OnLostFocus" >
+                    
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="270" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+            
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Spec." Binding="{Binding Species}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Pop." Binding="{Binding Population}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Germ." Binding="{Binding Values[Germinated].Value}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[Germinated].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Alive" Binding="{Binding Values[Alive].Value}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[Alive].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Bud. %" Binding="{Binding Values[Buds].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[Buds].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Flow. %" Binding="{Binding Values[Flower].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[Flower].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="MGD" Binding="{Binding Values[MeanGerminationDays].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[MeanGerminationDays].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="MBD" Binding="{Binding Values[MeanBudsDays].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[MeanBudsDays].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="MFD" Binding="{Binding Values[MeanFloweringDays].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[MeanFloweringDays].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="MSD" Binding="{Binding Values[MeanSeedsDays].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[MeanSeedsDays].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="MBFD" Binding="{Binding Values[MeanBudsFloweringDays].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[MeanBudsFloweringDays].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="MFSD" Binding="{Binding Values[MeanFloweringSeedsDays].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[MeanFloweringSeedsDays].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Expander>
+
+            <Expander Grid.Row="1" Margin="22,0,0,0" Header="Architecture" IsExpanded="False">
+                <DataGrid Margin="22,11" ItemsSource="{Binding StatisticLines}" AutoGenerateColumns="False"
+                          IsReadOnly="True" AlternatingRowBackground="Gainsboro" AlternationCount="2" FrozenColumnCount="2"
+                          SelectionChanged="OnSelectionChanged" LostFocus="OnLostFocus" >
+
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="270" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Spec." Binding="{Binding Species}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Pop." Binding="{Binding Population}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Meristem #" Binding="{Binding Values[MeristemCount].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[MeristemCount].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Stem. %" Binding="{Binding Values[Stem].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[Stem].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Branch. %" Binding="{Binding Values[Branch].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[Branch].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Sec. %" Binding="{Binding Values[Secondary].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[Secondary].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="BBP" Binding="{Binding Values[BasalBranchPercentage].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[BasalBranchPercentage].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="FMP" Binding="{Binding Values[FlowerMeristemPercentage].Value, StringFormat='0.##'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding Values[FlowerMeristemPercentage].ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Expander>
+        </Grid>
+    </Expander>
+</UserControl>

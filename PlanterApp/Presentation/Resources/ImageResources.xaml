@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <BitmapSource x:Key="ApplicationIcon">Images/Toma4025-Tea-Tea-plant-leaf.ico</BitmapSource>
+
+    <BitmapSource x:Key="PlantAlive">Images/plant_alive.png</BitmapSource>
+    <BitmapSource x:Key="PlantBuds">Images/plant_buds.png</BitmapSource>
+    <BitmapSource x:Key="PlantDead">Images/plant_dead.png</BitmapSource>
+    <BitmapSource x:Key="PlantEmpty">Images/plant_empty.png</BitmapSource>
+    <BitmapSource x:Key="PlantFlowering">Images/plant_flowering.png</BitmapSource>
+    <BitmapSource x:Key="PlantInitFailed">Images/plant_init_failed.png</BitmapSource>
+    <BitmapSource x:Key="PlantPlanted">Images/plant_planted.png</BitmapSource>
+    <BitmapSource x:Key="PlantSeeds">Images/plant_seeds.png</BitmapSource>
+    <BitmapSource x:Key="PlantAliveSelected">Images/plant_alive_selected.png</BitmapSource>
+    <BitmapSource x:Key="PlantBudsSelected">Images/plant_buds_selected.png</BitmapSource>
+    <BitmapSource x:Key="PlantDeadSelected">Images/plant_dead_selected.png</BitmapSource>
+    <BitmapSource x:Key="PlantEmptySelected">Images/plant_empty_selected.png</BitmapSource>
+    <BitmapSource x:Key="PlantFloweringSelected">Images/plant_flowering_selected.png</BitmapSource>
+    <BitmapSource x:Key="PlantInitFailedSelected">Images/plant_init_failed_selected.png</BitmapSource>
+    <BitmapSource x:Key="PlantPlantedSelected">Images/plant_planted_selected.png</BitmapSource>
+    <BitmapSource x:Key="PlantSeedsSelected">Images/plant_seeds_selected.png</BitmapSource>
+
+</ResourceDictionary>

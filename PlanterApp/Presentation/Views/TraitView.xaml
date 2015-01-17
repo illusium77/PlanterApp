@@ -1,0 +1,103 @@
+﻿<UserControl x:Class="PlanterApp.Presentation.Views.TraitView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:waf="http://waf.codeplex.com/schemas"             
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:c="clr-namespace:System.ComponentModel;assembly=WindowsBase"             
+             xmlns:l="clr-namespace:PlanterApp.Domain"
+             xmlns:v="clr-namespace:PlanterApp.Presentation.Views"             
+             xmlns:co="clr-namespace:PlanterApp.Presentation.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="plantStateEnum" MethodName="GetValues" ObjectType="{x:Type s:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="l:PlantState"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <co:NullToFalseConverter x:Key="NullToFalseConverter" />
+        <co:PlantTraitIdToNameConverter x:Key="PlantTraitIdToNameConverter" />
+        <waf:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+    </UserControl.Resources>
+    
+    <Expander Header="Plant traits" IsExpanded="True">
+
+        <Grid Margin="22,11">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!--<TextBlock Grid.Column="0" Grid.Row="0" Text="Plant ID" />
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding FocusedPlant.Plant.Id}" />-->
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Status" />
+            <Expander  Grid.Column="1" Grid.Row="0" Header="{Binding ExperimentService.SelectedPlant.CurrentState}" MinWidth="200">
+                <DataGrid ItemsSource="{Binding ExperimentService.SelectedPlant.PlantStatuses}" AutoGenerateColumns="False"
+                          CanUserAddRows="True" CanUserSortColumns="False" CanUserResizeRows="False" CanUserReorderColumns="False">
+
+                    <DataGrid.Columns>
+                        <DataGridComboBoxColumn Header="State" SelectedValueBinding="{Binding State}"
+                                                ItemsSource="{Binding Source={StaticResource plantStateEnum}}" />
+                        <DataGridTemplateColumn Header="Time stamp">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding TimeStamp, StringFormat='{}{0:ddd dd MMM yyyy}'}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <DatePicker SelectedDate="{Binding TimeStamp}" FirstDayOfWeek="Monday" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Expander>
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Traits" />
+            <Expander Grid.Column="1" Grid.Row="1" MinWidth="200">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    
+                    <ItemsControl Grid.Column="0" ItemsSource="{Binding ExperimentService.Experiment.Properties.PlantTraitNames}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <v:EditableTextBlock Text="{Binding Name}" Margin="4.5" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <ItemsControl Grid.Column="1" ItemsSource="{Binding ExperimentService.SelectedPlant.Plant.PlantTraitValues}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Name}" Margin="1" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Expander>
+
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Architecture" />            
+            <Expander Grid.Column="1" Grid.Row="2" MinWidth="200">
+                <ContentControl Content="{Binding ArchitectureView}" IsEnabled="{Binding ExperimentService.IsTimeMachineOn, Converter={StaticResource InvertBooleanConverter}}" />
+            </Expander>
+        
+        </Grid>
+    
+    </Expander>
+</UserControl>
