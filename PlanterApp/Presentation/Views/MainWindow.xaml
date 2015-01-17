@@ -49,8 +49,8 @@
                 <Button Command="{Binding CommandService.ExportCommand}" Content="Export.." ToolTip="Export experiment into CVS-file" />
                 <Separator Margin="4,2"/>
 
-                <ToggleButton x:Name="speechToggle" Command="{Binding CommandService.SpeechControlCommand}"
-                              Content="Voice Control" ToolTip="Toggle voice control on and off" CommandParameter="{Binding IsChecked, ElementName=speechToggle}" />
+                <!--<ToggleButton x:Name="speechToggle" Command="{Binding CommandService.SpeechControlCommand}"
+                              Content="Voice Control" ToolTip="Toggle voice control on and off" CommandParameter="{Binding IsChecked, ElementName=speechToggle}" />-->
                 <Separator Margin="4,2"/>
 
                 <DatePicker SelectedDate="{Binding CurrentDate}" DisplayDateStart="{Binding StartDate}" DisplayDateEnd="{Binding EndDate}" MouseWheel="OnMouseWheel"

@@ -165,7 +165,7 @@ namespace PlanterApp.Applications.Controllers
             _commandService.SaveAsCommand.RaiseCanExecuteChanged();
             _commandService.ExportCommand.RaiseCanExecuteChanged();
 
-            _commandService.SpeechControlCommand.RaiseCanExecuteChanged();
+            //_commandService.SpeechControlCommand.RaiseCanExecuteChanged();
         }
 
         private void OnExport(object obj)

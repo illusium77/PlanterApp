@@ -42,6 +42,6 @@ namespace PlanterApp.Applications.Services
 
         DelegateCommand ChangeNodeTypeCommand { get; set; }
 
-        DelegateCommand SpeechControlCommand { get; set; }
+        //DelegateCommand SpeechControlCommand { get; set; }
     }
 }

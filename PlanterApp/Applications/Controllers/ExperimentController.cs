@@ -34,7 +34,7 @@ namespace PlanterApp.Applications.Controllers
         private readonly IViewService _viewService;
 
         private readonly SelectionController _selectionController;
-        private readonly SpeechController _speechController;
+        //private readonly SpeechController _speechController;
 
         private readonly ExportFactory<ChamberViewModel> _chamberViewFactory;
         private readonly ExportFactory<TrayViewModel> _trayViewModelFactory;
@@ -98,7 +98,7 @@ namespace PlanterApp.Applications.Controllers
             IViewService viewService,
 
             SelectionController selectionController,
-            SpeechController speechController,
+            //SpeechController speechController,
 
             ExportFactory<ChamberViewModel> chamberViewFactory,
             ExportFactory<TrayViewModel> trayViewModelFactory,
@@ -113,7 +113,7 @@ namespace PlanterApp.Applications.Controllers
             _viewService = viewService;
 
             _selectionController = selectionController;
-            _speechController = speechController;
+            //_speechController = speechController;
 
             _chamberViewFactory = chamberViewFactory;
             _trayViewModelFactory = trayViewModelFactory;
@@ -138,7 +138,7 @@ namespace PlanterApp.Applications.Controllers
             Reset();
 
             _selectionController.Initialize();
-            _speechController.Initialize();
+            //_speechController.Initialize();
         }
 
         private void OnSelectedPlantChanged(object sender, PropertyChangedEventArgs e)
@@ -203,7 +203,7 @@ namespace PlanterApp.Applications.Controllers
 
                 var plantModels =  _mainViewModel.SelectedChamberView.Plants;
                 _statisticViewModel.PlantModels = plantModels;
-                _speechController.PrepareSpeech(plantModels);
+                //_speechController.PrepareSpeech(plantModels);
             }
         }
 
