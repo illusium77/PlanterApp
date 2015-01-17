@@ -58,6 +58,13 @@ namespace PlanterApp.Applications.Services
             set { SetProperty(ref _isTimeMachineOn, value); }
         }
 
+        private TrayType _trayType;
+        public TrayType TrayType
+        {
+            get { return _trayType; }
+            set { SetProperty(ref _trayType, value); }
+        }
+
         //public ExperimentService()
         //{
         //    _settings = new ObsoleteSettings();

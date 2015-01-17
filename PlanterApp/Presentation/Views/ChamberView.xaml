@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     
     <DockPanel>
-        <ItemsControl ItemsSource="{Binding Trays}" >
+        <ItemsControl DockPanel.Dock="Bottom" ItemsSource="{Binding Trays}" >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="1" />

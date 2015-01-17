@@ -123,6 +123,7 @@ namespace PlanterApp.Applications.Controllers
             _statisticViewModel = statisticViewModel;
 
             _commandService.ShuffleCommand = new DelegateCommand(OnTrayShuffle);
+            _commandService.ShowCoordinatesCommand = new DelegateCommand(OnShowCoordinatesCommand);
             _commandService.PlantStatusUpdateCommand = new DelegateCommand(OnPlantStatusUpdate);
         }
 
@@ -201,7 +202,7 @@ namespace PlanterApp.Applications.Controllers
             {
                 _selectionController.Reset();
 
-                var plantModels =  _mainViewModel.SelectedChamberView.Plants;
+                var plantModels = _mainViewModel.SelectedChamberView.Plants;
                 _statisticViewModel.PlantModels = plantModels;
                 //_speechController.PrepareSpeech(plantModels);
             }
@@ -278,7 +279,7 @@ namespace PlanterApp.Applications.Controllers
 
             //var errors = _experimentService.Validate();
             //_experimentService.ProcessTemporaryHacks();
-            
+
             //InitializeMainView();
 
             //PrepareChamberViews();
@@ -336,12 +337,13 @@ namespace PlanterApp.Applications.Controllers
             }
 
             _experimentService.Experiment = experiment;
+            _experimentService.TrayType = GetTrayType(experiment);
 
             var errors = _experimentService.Validate();
             _experimentService.ProcessTemporaryHacks();
 
             _mainViewModel.Title = string.IsNullOrEmpty(_fileName) ? ApplicationInfo.ProductName : ApplicationInfo.ProductName + " - " + _fileName;
-            
+
             FindTimeMachineStartDate();
             PrepareChamberViews();
 
@@ -392,7 +394,7 @@ namespace PlanterApp.Applications.Controllers
                 var chamberModel = _chamberViewFactory.CreateExport().Value;
                 chamberModel.Chamber = chamber;
                 chamberModel.Trays = PrepareTrayViews(chamberModel);
-                
+
                 return chamberModel;
             });
 
@@ -430,6 +432,23 @@ namespace PlanterApp.Applications.Controllers
             return plantModels;
         }
 
+        private TrayType GetTrayType(Experiment experiment)
+        {
+            var maxPlants = (from c in experiment.Chambers
+                             select c.Trays).SelectMany(t => t).Max(t => t.Plants.Count);
+
+            if (maxPlants <= 4 * 8)
+            {
+                return TrayType.Small;
+            }
+            else if (maxPlants <= 8 * 12)
+            {
+                return TrayType.Medium;
+            }
+
+            return TrayType.Huge;
+        }
+
         private void OnTrayShuffle(object obj)
         {
             var trayModel = obj as TrayViewModel;
@@ -442,6 +461,17 @@ namespace PlanterApp.Applications.Controllers
                 trayModel.Tray.Shuffle();
                 trayModel.Tray.ShuffleTimeStamp = DateTime.Now;
                 trayModel.UpdateHeader();
+            }
+        }
+
+        private void OnShowCoordinatesCommand(object obj)
+        {
+            var trays = (from c in _mainViewModel.ChamberViews
+                         select c.Trays).SelectMany(t => t);
+
+            foreach (var tray in trays)
+            {
+                tray.ShowCoordinates((bool)obj);
             }
         }
 

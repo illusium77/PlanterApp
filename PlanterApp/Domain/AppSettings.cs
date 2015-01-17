@@ -20,6 +20,13 @@ namespace PlanterApp.Domain
         InitFailed
     }
 
+    public enum TrayType
+    {
+        Small,  // 4x8 plants
+        Medium, // 8x12 plants
+        Huge    // 10x22 plants
+    }
+
     //public enum SpeciesType
     //{
     //    ML,

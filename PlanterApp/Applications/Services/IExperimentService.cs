@@ -20,5 +20,6 @@ namespace PlanterApp.Applications.Services
 
         object SelectedPlant { get; set; }
         object SelectedPlantArchitecture { get; set; }
+        TrayType TrayType { get; set; }
     }
 }

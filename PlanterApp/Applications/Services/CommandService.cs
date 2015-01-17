@@ -27,6 +27,13 @@ namespace PlanterApp.Applications.Services
             set { SetProperty(ref _plantStatusUpdateCommand, value); }
         }
 
+        private DelegateCommand _showCoordinatesCommand;
+        public DelegateCommand ShowCoordinatesCommand
+        {
+            get { return _showCoordinatesCommand; }
+            set { SetProperty(ref _showCoordinatesCommand, value); }
+        }
+
         #region Architecture Commands
 
         private DelegateCommand _addNodeCommand;

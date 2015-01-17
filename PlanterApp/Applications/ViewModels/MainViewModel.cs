@@ -89,6 +89,13 @@ namespace PlanterApp.Applications.ViewModels
             }
         }
 
+        private bool _showCoordinates;
+        public bool ShowCoordinates
+        {
+            get { return _showCoordinates; }
+            set { SetProperty(ref _showCoordinates, value); }
+        }
+
         [ImportingConstructor]
         public MainViewModel(IMainView view, IExperimentService experimentService, ICommandService commandService, IViewService viewService)
             : base(view)
@@ -142,6 +149,8 @@ namespace PlanterApp.Applications.ViewModels
             }
 
             _chamberViews = null;
+
+            ShowCoordinates = false;
         }
     }
 }

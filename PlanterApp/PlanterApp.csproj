@@ -223,6 +223,7 @@
     <Compile Include="Presentation\Converters\MultiCommandParamConverter.cs" />
     <Compile Include="Presentation\Converters\PlantNoteVisibilityConverter.cs" />
     <Compile Include="Presentation\Converters\PlantStatusToColorConverter.cs" />
+    <Compile Include="Presentation\Converters\TraySizeConverter.cs" />
     <Compile Include="Presentation\Views\ArchitectureNodeView.xaml.cs">
       <DependentUpon>ArchitectureNodeView.xaml</DependentUpon>
     </Compile>

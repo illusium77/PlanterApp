@@ -49,6 +49,7 @@ namespace PlanterApp.Applications.Controllers
                 foreach (PlantViewModel model in e.OldItems)
                 {
                     model.IsSelected = false;
+                    model.ParentTray.UpdateSelected(null);
                 }
             }
             if (e.NewItems != null)
@@ -56,6 +57,7 @@ namespace PlanterApp.Applications.Controllers
                 foreach (PlantViewModel model in e.NewItems)
                 {
                     model.IsSelected = true;
+                    model.ParentTray.UpdateSelected(model);
                 }
             }
         }
@@ -81,11 +83,19 @@ namespace PlanterApp.Applications.Controllers
             {
                 foreach (var model in models)
                 {
-                    _selectedPlantModels.Add(model);
+                    if (!model.IsSelected)
+                    {
+                        _selectedPlantModels.Add(model);
+                    }
+                    else
+                    {
+                        _selectedPlantModels.Remove(model);
+                    }
                 }
             }
 
-            _experimentService.SelectedPlant = _selectedPlantModels.LastOrDefault();
+            var lastPlant = _selectedPlantModels.LastOrDefault();
+            _experimentService.SelectedPlant = lastPlant;
         }
 
         public void Reset()

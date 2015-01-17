@@ -4,9 +4,35 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:v="clr-namespace:PlanterApp.Presentation.Views"
+             xmlns:c="clr-namespace:PlanterApp.Presentation.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    
+
+    <UserControl.Resources>
+        <Style TargetType="ItemsControl" x:Key="CoordinateStyle">
+            <Setter Property="Visibility" Value="{Binding CoordinateVisibility}" />
+            <Setter Property="AlternationCount" Value="2" />
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <StackPanel Name="textBlock" HorizontalAlignment="Stretch" MinWidth="50" >
+                            <TextBlock Text="{Binding}" HorizontalAlignment="Center" />
+                        </StackPanel>
+                        <DataTemplate.Triggers>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                <Setter TargetName="textBlock" Property="Background" Value="Transparent"/>
+                            </Trigger>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter TargetName="textBlock" Property="Background" Value="Gray"/>
+                            </Trigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
     <GroupBox Header="{Binding Header}" Foreground="{Binding HeaderColour}">
         <GroupBox.ContextMenu>
             <ContextMenu>
@@ -14,22 +40,33 @@
                     <MenuItem.Header>
                         <TextBlock>
                             <Run Text="Shuffle tray" />                            
-                            <Run Text="{Binding Tray.Notes}" />                            
+                            <Run Text="{Binding Tray.Notes}" />
                         </TextBlock>
                     </MenuItem.Header>
                 </MenuItem>
             </ContextMenu>
         </GroupBox.ContextMenu>
-        <DockPanel>
-            <!--<Grid DockPanel.Dock="Bottom">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                
-                <Button Content="Shuffle" Command="{Binding ShuffleCommand}" CommandParameter="{Binding}" />
-            </Grid>-->
 
-            <ItemsControl ItemsSource="{Binding Plants}">
+        <DockPanel>
+
+            <ItemsControl DockPanel.Dock="Left" ItemsSource="{Binding RowNames}" Style="{StaticResource CoordinateStyle}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="1" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+
+            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding ColumnNames}" Style="{StaticResource CoordinateStyle}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="{Binding ColumnCount}" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+
+            <ItemsControl DockPanel.Dock="Bottom" ItemsSource="{Binding Plants}">
+
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Columns="{Binding ColumnCount}" />

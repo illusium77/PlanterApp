@@ -37,19 +37,11 @@ namespace PlanterApp.Applications.ViewModels
             set { SetProperty(ref _headerColour, value); }
         }
 
-
         private Tray _tray;
         public Tray Tray
         {
             get { return _tray; }
             set { SetProperty(ref _tray, value); }
-        }
-
-        private int _columnCount;
-        public int ColumnCount
-        {
-            get { return _columnCount; }
-            set { SetProperty(ref _columnCount, value); }
         }
 
         private SynchronizingCollection<PlantViewModel, Plant> _plants;
@@ -61,7 +53,7 @@ namespace PlanterApp.Applications.ViewModels
                 if (SetProperty(ref _plants, value) && Tray != null)
                 {
                     UpdateHeader();
-                    UpdateColumnCount();
+                    InitRowAndColumnNames();
                 }
             }
         }
@@ -73,21 +65,32 @@ namespace PlanterApp.Applications.ViewModels
             set { SetProperty(ref _parentChamber, value); }
         }
 
-        private void UpdateColumnCount()
+        private int _columnCount;
+        public int ColumnCount
         {
-            switch (Plants.Count)
-            {
-                case 4 * 8:
-                    ColumnCount = 8;
-                    break;
-                case 8 * 12:
-                    ColumnCount = 12;
-                    break;
-                case 10 * 22:
-                default:
-                    ColumnCount = 22;
-                    break;
-            }
+            get { return _columnCount; }
+            set { SetProperty(ref _columnCount, value); }
+        }
+
+        private ObservableCollection<string> _columnNames;
+        public ObservableCollection<string> ColumnNames
+        {
+            get { return _columnNames; }
+            set { SetProperty(ref _columnNames, value); }
+        }
+
+        private ObservableCollection<string> _rowNames;
+        public ObservableCollection<string> RowNames
+        {
+            get { return _rowNames; }
+            set { SetProperty(ref _rowNames, value); }
+        }
+
+        private Visibility _coordinateVisibility;
+        public Visibility CoordinateVisibility
+        {
+            get { return _coordinateVisibility; }
+            set { SetProperty(ref _coordinateVisibility, value); }
         }
 
         public void UpdateHeader()
@@ -113,10 +116,40 @@ namespace PlanterApp.Applications.ViewModels
         }
 
         [ImportingConstructor]
-        public TrayViewModel(ITrayView view, ICommandService commandService)
+        public TrayViewModel(ITrayView view, ICommandService commandService, IExperimentService experimentService)
             : base(view)
         {
             _commandService = commandService;
+
+            switch (experimentService.TrayType)
+            {
+                case TrayType.Huge:
+                    ColumnCount = 10;
+                    break;
+                case TrayType.Small:
+                case TrayType.Medium:
+                default:
+                    ColumnCount = 8;
+                    break;
+            }
+
+            CoordinateVisibility = Visibility.Collapsed;
+        }
+
+        private void InitRowAndColumnNames()
+        {
+            ColumnNames = new ObservableCollection<string>();
+            for (int i = 0; i < ColumnCount; i++)
+            {
+                var ch = (char)('A' + i);
+                ColumnNames.Add(ch.ToString());
+            }
+
+            RowNames = new ObservableCollection<string>();
+            for (int i = 0; i <= Plants.Count / ColumnCount; i++)
+            {
+                RowNames.Add(i != 0 ? i.ToString() : string.Empty);
+            }
         }
 
         internal void Reset()
@@ -126,13 +159,35 @@ namespace PlanterApp.Applications.ViewModels
                 return;
             }
 
-            foreach(var plant in _plants)
+            foreach (var plant in _plants)
             {
                 plant.Reset();
             }
 
+            CoordinateVisibility = Visibility.Collapsed;
             _plants = null;
-            
+        }
+
+        internal void ShowCoordinates(bool showCoordinates)
+        {
+            CoordinateVisibility = showCoordinates ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        internal void UpdateSelected(PlantViewModel lastPlant)
+        {
+            if (CoordinateVisibility == Visibility.Visible && lastPlant != null)
+            {
+                var index = Plants.IndexOf(lastPlant);
+
+                var x = index % ColumnCount;
+                var y = index / ColumnCount + 1;
+
+                _rowNames[0] = "(" + _columnNames[x] + ", " + _rowNames[y] + ")";
+            }
+            else
+            {
+                _rowNames[0] = string.Empty;
+            }
         }
     }
 }

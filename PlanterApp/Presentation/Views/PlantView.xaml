@@ -8,26 +8,28 @@
              xmlns:c="clr-namespace:PlanterApp.Presentation.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="600">
-             <!--Width="115" Height="18" MinHeight="18" UseLayoutRounding="True">-->
-    
+    <!--Width="115" Height="18" MinHeight="18" UseLayoutRounding="True">-->
+
     <UserControl.Resources>
-        <c:PlantStatusToImageConverter x:Key="PlantStatusToImageConverter" />
+        <!--<c:PlantStatusToImageConverter x:Key="PlantStatusToImageConverter" />-->
+        <c:PlantStatusToColorConverter x:Key="PlantStatusToImageConverter" />
 
         <Style x:Key="PlantViewStyle" TargetType="Grid">
             <Setter Property="Opacity" Value="1" />
-            <Setter Property="RenderTransformOrigin" Value="0.5, 0.5" />
+            <!--<Setter Property="RenderTransformOrigin" Value="0.5, 0.5" />-->
 
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Plant.IsExcluded}" Value="true">
                     <Setter Property="Opacity" Value="0.5" />
                 </DataTrigger>
-                
+
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="RenderTransform">
+                    <!--<Setter Property="RenderTransform">
                         <Setter.Value>
                             <ScaleTransform ScaleX="1.01" ScaleY="1.01" />
                         </Setter.Value>
-                    </Setter>
+                    </Setter>-->
+                    <!--<Setter Property="stro"-->
                 </Trigger>
 
             </Style.Triggers>
@@ -37,7 +39,8 @@
         <Style x:Key="PlantViewLabelStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="Black" />
             <Setter Property="FontSize" Value="12" />
-            
+            <Setter Property="IsHitTestVisible" Value="False" />
+
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsSelected}" Value="true">
                     <Setter Property="Foreground" Value="White" />
@@ -45,25 +48,44 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="PlantRectangeStyle" TargetType="Rectangle">
+            <Style.Triggers>
+
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Stroke" Value="Red" />
+                    <Setter Property="StrokeThickness" Value="1" />
+                </Trigger>
+
+                <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                    <Setter Property="Stroke" Value="Red" />
+                    <Setter Property="StrokeThickness" Value="2" />
+                </DataTrigger>
+
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
-    
+
     <Grid ToolTip="{Binding ToolTip}" Style="{StaticResource PlantViewStyle}" MouseDown="OnMouseDown" MouseUp="OnMouseUp" ContextMenuOpening="OnContextMenuOpen">
-        <Image VerticalAlignment="Top" HorizontalAlignment="Left">
+        <Rectangle Fill="{Binding CurrentState, Converter={StaticResource PlantStatusToColorConverter}}" Style="{StaticResource PlantRectangeStyle}" />
+        <!--<Image VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image.Source>
                 <MultiBinding Converter="{StaticResource PlantStatusToImageConverter}">
                     <Binding Path="CurrentState" />
                     <Binding Path="IsSelected" />
                 </MultiBinding>
             </Image.Source>
-        </Image>
+        </Image>-->
         <TextBlock Style="{StaticResource PlantViewLabelStyle}" Text="{Binding Label}" HorizontalAlignment="Center" />
-        <Polygon Points="2,1 8,1, 2,7" Stroke="Transparent" Fill="Red"
+        <!--<Polygon Points="2,1 8,1, 2,7" Stroke="Transparent" Fill="Red"-->
+        <Polygon Points="0,0 10,0, 0,10" Stroke="Transparent" Fill="Red"
                  Visibility="{Binding Plant.Notes, Converter={StaticResource PlantNoteVisibilityConverter}}" />
 
         <Grid.ContextMenu>
-            <ContextMenu ItemsSource="{Binding ChangeStateMenu}" DisplayMemberPath="CommandParameter.TargetState" ItemContainerStyle="{StaticResource PlanterMenuItemStyle}" />
+            <ContextMenu ItemsSource="{Binding ChangeStateMenu}" DisplayMemberPath="CommandParameter.TargetState"
+                         ItemContainerStyle="{StaticResource PlanterMenuItemStyle}" />
 
-                <!--<MenuItem Header="Change type" ItemsSource="{Binding ChangeTypeMenu}" DisplayMemberPath="CommandParameter.TargetState"
+            <!--<MenuItem Header="Change type" ItemsSource="{Binding ChangeTypeMenu}" DisplayMemberPath="CommandParameter.TargetState"
                           Visibility="{Binding Meristem.Type, Converter={StaticResource GenericMeristemConverter}, ConverterParameter=CanChangeType}"
                           ItemContainerStyle="{StaticResource PlanterMenuItemStyle}" />
 
@@ -83,7 +105,6 @@
                 </ContextMenu.ItemContainerStyle>
             </ContextMenu>
         </Grid.ContextMenu>-->
-            
-    </Grid>
 
+    </Grid>
 </UserControl>
