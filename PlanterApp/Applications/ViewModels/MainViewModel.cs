@@ -103,6 +103,19 @@ namespace PlanterApp.Applications.ViewModels
             set { SetProperty(ref _showGrid, value); }
         }
 
+        private object _currentPlantLabelStyle;
+        public object CurrentPlantLabelStyle
+        {
+            get { return _currentPlantLabelStyle; }
+            set 
+            {
+                if (SetProperty(ref _currentPlantLabelStyle, value))
+                {
+                    UpdateLabels((PlantLabelType)value);
+                }
+            }
+        }
+
         [ImportingConstructor]
         public MainViewModel(IMainView view, IExperimentService experimentService, ICommandService commandService, IViewService viewService)
             : base(view)
@@ -112,6 +125,7 @@ namespace PlanterApp.Applications.ViewModels
             _viewService = viewService;
 
             _currentDate = DateTime.Now;
+            _currentPlantLabelStyle = PlantLabelType.Normal;
         }
 
         private void ApplyCurrentDate()
@@ -126,6 +140,23 @@ namespace PlanterApp.Applications.ViewModels
 
             _experimentService.IsTimeMachineOn = _currentDate.Date < DateTime.Now.Date;
         }
+
+        private void UpdateLabels(PlantLabelType plantLabelType)
+        {
+            if (ChamberViews == null)
+            {
+                return;
+            }
+
+            var plants = (from c in ChamberViews
+                         select c.Plants).SelectMany(p => p);
+
+            foreach (var p in plants)
+            {
+                p.SetLabelType(plantLabelType);
+            }
+        }
+
 
         public void Show()
         {
@@ -159,6 +190,8 @@ namespace PlanterApp.Applications.ViewModels
 
             ShowCoordinates = false;
             ShowGrid = false;
+            CurrentPlantLabelStyle = PlantLabelType.Normal;
+
         }
     }
 }

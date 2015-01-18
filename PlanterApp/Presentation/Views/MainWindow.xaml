@@ -7,6 +7,8 @@
         xmlns:v="clr-namespace:PlanterApp.Presentation.Views"
         xmlns:c="clr-namespace:PlanterApp.Presentation.Converters"
         xmlns:waf="http://waf.codeplex.com/schemas"        
+        xmlns:s="clr-namespace:System;assembly=mscorlib"
+        xmlns:l="clr-namespace:PlanterApp.Domain"        
         mc:Ignorable="d" Title="{Binding Title}" Icon="{StaticResource ApplicationIcon}"
         KeyDown="OnKeyUpDownEvent" KeyUp="OnKeyUpDownEvent"
         Width="1450" MinWidth="1450"
@@ -28,6 +30,12 @@
     <Window.Resources>
         <waf:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <c:TimeMachineBorderColorConverter x:Key="TimeMachineBorderColorConverter" />
+
+        <ObjectDataProvider x:Key="plantLabelTypeEnum" MethodName="GetValues" ObjectType="{x:Type s:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="l:PlantLabelType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Window.Resources>
 
     <DockPanel>
@@ -73,7 +81,7 @@
                 <ToggleButton x:Name="gridToggle" Command="{Binding CommandService.PlantGridCommand}" IsChecked="{Binding ShowGrid}"
                               Content="Grid" ToolTip="Toggle plant grid on and off"
                               CommandParameter="{Binding IsChecked, ElementName=gridToggle}" />
-
+                <ComboBox ItemsSource="{Binding Source={StaticResource plantLabelTypeEnum}}" SelectedItem="{Binding CurrentPlantLabelStyle}" />
             </ToolBar>
         </ToolBarTray>
 

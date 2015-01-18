@@ -22,6 +22,8 @@ namespace PlanterApp.Applications.ViewModels
     {
         public event EventHandler ArchitectureUpdated;
 
+        private PlantLabelType _currentLabel;
+
         private Plant _plant;
         public Plant Plant
         {
@@ -191,7 +193,7 @@ namespace PlanterApp.Applications.ViewModels
             get { return _hasArchitecture; }
             set { SetProperty(ref _hasArchitecture, value); }
         }
-     
+
         private DateTime _currentDate;
         public DateTime CurrentDate
         {
@@ -225,7 +227,7 @@ namespace PlanterApp.Applications.ViewModels
             {
                 ChangeStateMenu.Clear();
             }
-            
+
             var allStates = Enum.GetValues(typeof(PlantState)).Cast<PlantState>();
             var existingStates = from item in _plantStatuses.OfType<StatusItem>()
                                  select item.State;
@@ -238,7 +240,7 @@ namespace PlanterApp.Applications.ViewModels
                 var param = new PlanterMenuCommandParam { Source = this, TargetState = state };
                 ChangeStateMenu.Add(new PlanterMenuItem(_commandService.PlantStatusUpdateCommand, param));
             }
-        } 
+        }
 
         private IExperimentService _experimentService;
         public IExperimentService ExperimentService
@@ -281,7 +283,7 @@ namespace PlanterApp.Applications.ViewModels
             get { return _parentTray; }
             set { SetProperty(ref _parentTray, value); }
         }
-        
+
         [ImportingConstructor]
         public PlantViewModel(IPlantView view, IExperimentService experimentService, ICommandService commandService)
             : base(view)
@@ -290,6 +292,7 @@ namespace PlanterApp.Applications.ViewModels
             _commandService = commandService;
 
             _currentDate = DateTime.Now.Date;
+            _currentLabel = PlantLabelType.Normal;
         }
 
         private void RefreshLabel()
@@ -301,10 +304,19 @@ namespace PlanterApp.Applications.ViewModels
 
             var names = _experimentService.Experiment.Properties.GetNames(_plant);
 
-            Label = _plant.Id + " " + names[ExperimentProperties.Names.Species]
-                + " " + names[ExperimentProperties.Names.Population]
-                + " " + names[ExperimentProperties.Names.Family]
-                + " " + _plant.Individual;
+            switch (_currentLabel)
+            {
+                case PlantLabelType.Population:
+                    Label = names[ExperimentProperties.Names.Population];
+                    break;
+                case PlantLabelType.Normal:
+                default:
+                    Label = _plant.Id + " " + names[ExperimentProperties.Names.Species]
+                        + " " + names[ExperimentProperties.Names.Population]
+                        + " " + names[ExperimentProperties.Names.Family]
+                        + " " + _plant.Individual;
+                    break;
+            }
         }
 
         private void RefreshToolTip()
@@ -396,7 +408,7 @@ namespace PlanterApp.Applications.ViewModels
             }
 
             _plant.PlantStatuses.Add(newItem);
-   
+
 
 
             //if (statusItem == null)
@@ -417,6 +429,12 @@ namespace PlanterApp.Applications.ViewModels
 
         internal void Reset()
         {
+        }
+
+        internal void SetLabelType(PlantLabelType plantLabelType)
+        {
+            _currentLabel = plantLabelType;
+            RefreshLabel();
         }
     }
 }

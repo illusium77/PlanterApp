@@ -27,6 +27,12 @@ namespace PlanterApp.Domain
         Huge    // 10x22 plants
     }
 
+    public enum PlantLabelType
+    {
+        Normal,
+        Population
+    }
+
     //public enum SpeciesType
     //{
     //    ML,
