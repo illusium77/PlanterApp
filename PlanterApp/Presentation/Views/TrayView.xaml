@@ -15,7 +15,7 @@
             <Setter Property="ItemTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <StackPanel Name="textBlock" HorizontalAlignment="Stretch" MinWidth="25" >
+                        <StackPanel Name="textBlock" HorizontalAlignment="Stretch" MinWidth="35" >
                             <TextBlock Text="{Binding}" HorizontalAlignment="Center" />
                         </StackPanel>
                         <DataTemplate.Triggers>

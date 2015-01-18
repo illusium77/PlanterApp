@@ -164,6 +164,8 @@ namespace PlanterApp.Applications.Controllers
             _commandService.SaveCommand.RaiseCanExecuteChanged();
             _commandService.SaveAsCommand.RaiseCanExecuteChanged();
             _commandService.ExportCommand.RaiseCanExecuteChanged();
+            _commandService.PlantGridCommand.RaiseCanExecuteChanged();
+            _commandService.ShowCoordinatesCommand.RaiseCanExecuteChanged();
 
             //_commandService.SpeechControlCommand.RaiseCanExecuteChanged();
         }

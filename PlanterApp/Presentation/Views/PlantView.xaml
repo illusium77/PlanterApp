@@ -42,9 +42,9 @@
             <Setter Property="IsHitTestVisible" Value="False" />
 
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                <!--<DataTrigger Binding="{Binding IsSelected}" Value="true">
                     <Setter Property="Foreground" Value="White" />
-                </DataTrigger>
+                </DataTrigger>-->
             </Style.Triggers>
         </Style>
 

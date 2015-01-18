@@ -81,7 +81,8 @@
                 <ToggleButton x:Name="gridToggle" Command="{Binding CommandService.PlantGridCommand}" IsChecked="{Binding ShowGrid}"
                               Content="Grid" ToolTip="Toggle plant grid on and off"
                               CommandParameter="{Binding IsChecked, ElementName=gridToggle}" />
-                <ComboBox ItemsSource="{Binding Source={StaticResource plantLabelTypeEnum}}" SelectedItem="{Binding CurrentPlantLabelStyle}" />
+                <ComboBox ItemsSource="{Binding Source={StaticResource plantLabelTypeEnum}}" SelectedItem="{Binding CurrentPlantLabelStyle}"
+                          IsEnabled="{Binding ExperimentService.HasExperiment}"/>
             </ToolBar>
         </ToolBarTray>
 

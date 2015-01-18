@@ -123,8 +123,8 @@ namespace PlanterApp.Applications.Controllers
             _statisticViewModel = statisticViewModel;
 
             _commandService.ShuffleCommand = new DelegateCommand(OnTrayShuffle);
-            _commandService.ShowCoordinatesCommand = new DelegateCommand(OnShowCoordinatesCommand);
-            _commandService.PlantGridCommand = new DelegateCommand(o => _experimentService.ShowPlantGrid = (bool)o);
+            _commandService.ShowCoordinatesCommand = new DelegateCommand(OnShowCoordinatesCommand, p => IsSaveAsEnabled);
+            _commandService.PlantGridCommand = new DelegateCommand(o => _experimentService.ShowPlantGrid = (bool)o, p => IsSaveAsEnabled);
             _commandService.PlantStatusUpdateCommand = new DelegateCommand(OnPlantStatusUpdate);
         }
 

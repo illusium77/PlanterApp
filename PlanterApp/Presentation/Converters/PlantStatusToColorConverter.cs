@@ -19,7 +19,7 @@ namespace PlanterApp.Presentation.Converters
             switch (state)
             {
                 case PlantState.Empty:
-                    return Brushes.LightGray;
+                    return Brushes.White;
                 case PlantState.Planted:
                     return Brushes.DeepSkyBlue;
                 case PlantState.Alive:
