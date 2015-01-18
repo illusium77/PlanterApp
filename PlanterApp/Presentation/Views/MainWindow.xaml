@@ -68,7 +68,12 @@
 
                 <Separator Margin="4,2"/>
                 <ToggleButton x:Name="coordinateToggle" Command="{Binding CommandService.ShowCoordinatesCommand}" IsChecked="{Binding ShowCoordinates}"
-                              Content="Coordinates" ToolTip="Toggle plant coordinates on and off" CommandParameter="{Binding IsChecked, ElementName=coordinateToggle}" />
+                              Content="Coordinates" ToolTip="Toggle plant coordinates on and off" 
+                              CommandParameter="{Binding IsChecked, ElementName=coordinateToggle}" />
+                <ToggleButton x:Name="gridToggle" Command="{Binding CommandService.PlantGridCommand}" IsChecked="{Binding ShowGrid}"
+                              Content="Grid" ToolTip="Toggle plant grid on and off"
+                              CommandParameter="{Binding IsChecked, ElementName=gridToggle}" />
+
             </ToolBar>
         </ToolBarTray>
 

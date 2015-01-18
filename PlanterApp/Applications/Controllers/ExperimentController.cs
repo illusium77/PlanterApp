@@ -124,6 +124,7 @@ namespace PlanterApp.Applications.Controllers
 
             _commandService.ShuffleCommand = new DelegateCommand(OnTrayShuffle);
             _commandService.ShowCoordinatesCommand = new DelegateCommand(OnShowCoordinatesCommand);
+            _commandService.PlantGridCommand = new DelegateCommand(o => _experimentService.ShowPlantGrid = (bool)o);
             _commandService.PlantStatusUpdateCommand = new DelegateCommand(OnPlantStatusUpdate);
         }
 

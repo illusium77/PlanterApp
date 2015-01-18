@@ -34,6 +34,13 @@ namespace PlanterApp.Applications.Services
             set { SetProperty(ref _showCoordinatesCommand, value); }
         }
 
+        private DelegateCommand _plantGridCommand;
+        public DelegateCommand PlantGridCommand
+        {
+            get { return _plantGridCommand; }
+            set { SetProperty(ref _plantGridCommand, value); }
+        }
+
         #region Architecture Commands
 
         private DelegateCommand _addNodeCommand;

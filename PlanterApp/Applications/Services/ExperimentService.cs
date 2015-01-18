@@ -65,6 +65,13 @@ namespace PlanterApp.Applications.Services
             set { SetProperty(ref _trayType, value); }
         }
 
+        private bool _showPlantGrid;
+        public bool ShowPlantGrid
+        {
+            get { return _showPlantGrid; }
+            set { SetProperty(ref _showPlantGrid, value); }
+        }
+
         //public ExperimentService()
         //{
         //    _settings = new ObsoleteSettings();
@@ -243,6 +250,7 @@ namespace PlanterApp.Applications.Services
             SelectedPlant = null;
             SelectedPlantArchitecture = null;
             Experiment = null;
+            ShowPlantGrid = false;
         }
 
         #region TempRuns

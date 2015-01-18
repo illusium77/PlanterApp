@@ -44,6 +44,8 @@ namespace PlanterApp.Applications.Services
 
         DelegateCommand ShowCoordinatesCommand { get; set; }
 
+        DelegateCommand PlantGridCommand { get; set; }
+
         //DelegateCommand SpeechControlCommand { get; set; }
     }
 }

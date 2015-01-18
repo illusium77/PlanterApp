@@ -51,6 +51,11 @@
         <Style x:Key="PlantRectangeStyle" TargetType="Rectangle">
             <Style.Triggers>
 
+                <DataTrigger Binding="{Binding ExperimentService.ShowPlantGrid}" Value="true">
+                    <Setter Property="Stroke" Value="Black" />
+                    <Setter Property="StrokeThickness" Value="1" />
+                </DataTrigger>
+
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Stroke" Value="Red" />
                     <Setter Property="StrokeThickness" Value="1" />

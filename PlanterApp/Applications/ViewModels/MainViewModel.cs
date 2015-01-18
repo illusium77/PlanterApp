@@ -96,6 +96,13 @@ namespace PlanterApp.Applications.ViewModels
             set { SetProperty(ref _showCoordinates, value); }
         }
 
+        private bool _showGrid;
+        public bool ShowGrid
+        {
+            get { return _showGrid; }
+            set { SetProperty(ref _showGrid, value); }
+        }
+
         [ImportingConstructor]
         public MainViewModel(IMainView view, IExperimentService experimentService, ICommandService commandService, IViewService viewService)
             : base(view)
@@ -151,6 +158,7 @@ namespace PlanterApp.Applications.ViewModels
             _chamberViews = null;
 
             ShowCoordinates = false;
+            ShowGrid = false;
         }
     }
 }
