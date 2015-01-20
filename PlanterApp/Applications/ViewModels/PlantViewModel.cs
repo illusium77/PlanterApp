@@ -409,7 +409,16 @@ namespace PlanterApp.Applications.ViewModels
 
             _plant.PlantStatuses.Add(newItem);
 
-
+            var emptyStates = (from s in _plant.PlantStatuses
+                              where s.State == PlantState.Empty
+                              select s).ToList();
+            if (newItem.State != PlantState.Empty && emptyStates.Any())
+            {
+                foreach (var e in emptyStates)
+                {
+                    _plant.PlantStatuses.Remove(e);
+                }
+            }
 
             //if (statusItem == null)
             //{

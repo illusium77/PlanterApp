@@ -263,6 +263,7 @@ namespace PlanterApp.Applications.Services
             }
 
             AddTraits();
+            RemoveEmptyStatuses();
 
             //HasExperiment = _experiment != null && _experiment.HasData;
 
@@ -286,6 +287,26 @@ namespace PlanterApp.Applications.Services
             //ImportNodeDump();
             //InitializeNewArchitecture();
             //FixMeristemDates();
+        }
+
+        private void RemoveEmptyStatuses()
+        {
+            foreach (var p in _experiment.GetPlants())
+            {
+                if (p.PlantStatuses != null && p.PlantStatuses.Count > 1)
+                {
+                    var empty = (from s in p.PlantStatuses
+                                 where s.State == PlantState.Empty
+                                 select s).ToList();
+                    if (empty.Any())
+                    {
+                        foreach (var e in empty)
+                        {
+                            p.PlantStatuses.Remove(e);
+                        }
+                    }
+                }
+            }
         }
 
         private void AddTraits()
