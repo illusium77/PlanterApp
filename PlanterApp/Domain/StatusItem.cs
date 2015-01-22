@@ -33,7 +33,7 @@ namespace PlanterApp.Domain
         {
             if (itemA == null || itemB == null)
             {
-                throw new Exception("Cannot get time delta if item is null");
+                return 0;
             }
 
             return (itemB.TimeStamp - itemA.TimeStamp).Days;

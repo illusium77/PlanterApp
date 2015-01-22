@@ -372,7 +372,7 @@ namespace PlanterApp.Applications.ViewModels
 
             if (delta < 0)
             {
-                throw new InvalidOperationException("End state '" + endState + "' was before plant was before start state '" + startState + "'!");
+                delta = 0;
             }
 
             return delta;
