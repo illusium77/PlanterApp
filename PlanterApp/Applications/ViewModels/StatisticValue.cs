@@ -62,12 +62,11 @@ namespace PlanterApp.Applications.ViewModels
             return _plantModels.Count(model => model.HasState(state) && model.Plant.IsExcluded == false);
         }
 
-        protected string GetPercent(int a, int b)
+        protected float? GetPercent(int a, int b)
         {
             if (b != 0)
             {
-                var percent = ((float)a / b) * 100;
-                return percent.ToString("0.00");
+                return ((float)a / b) * 100;
             }
 
             return null;
